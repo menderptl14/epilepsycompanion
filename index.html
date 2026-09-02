@@ -139,6 +139,28 @@
         .leaflet-section h2 { color: #2c3e50; margin-bottom: 15px; font-size: 1.4em; }
         .leaflet-section h3 { color: #4B3472; margin: 18px 0 10px; font-size: 1.05em; }
         .leaflet-section p  { color: #555; line-height: 1.8; margin-bottom: 10px; }
+
+        /* ── RUNNING DISCLAIMER BAR (all pages except language select) ── */
+        #disclaimerBar {
+            display: none;
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 2000;
+            background: #ffffff; border-top: 2px solid #4B3472;
+            padding: 6px 0; overflow: hidden; white-space: nowrap;
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.15);
+        }
+        #disclaimerBar.show { display: block; }
+        #disclaimerBar .marquee-track {
+            display: inline-block; padding-left: 100%;
+            animation: disclaimerScroll 45s linear infinite;
+        }
+        #disclaimerBar span {
+            color: #000000; font-size: 0.78em; font-weight: 500;
+        }
+        @keyframes disclaimerScroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        body { padding-bottom: 40px; }
         .leaflet-section ul { margin-left: 20px; color: #555; line-height: 1.8; }
         .leaflet-section li { margin-bottom: 8px; }
         .dos-donts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
@@ -203,6 +225,18 @@
     </style>
 </head>
 <body>
+
+<!-- ================================================================
+     RUNNING DISCLAIMER BAR
+     Shown fixed at the bottom on every page. It sits behind the
+     language-picker overlay (lower z-index), so it is not visible
+     on the language selection screen, and appears on all other pages.
+     ================================================================ -->
+<div id="disclaimerBar">
+    <div class="marquee-track">
+        <span>Disclaimer: The digital content presented in this material is Conceptualized/Developed by Suerte Publishers for Sun Pharma. This digital content is for patient education/awareness purpose only. It does not replace the advice or counsel of a doctor or health care professional. Sun makes every effort to provide information that is accurate and timely, but makes no guarantee in this regard. You should consult with, and rely only on the advice of, your physician or health care professional. Although great care has been taken in compiling and checking the information, the Suerte Publishers and its associates or agents, and sponsors shall not be responsible, or in any way liable for any errors, omission or inaccuracies in this material whether arising from negligence or otherwise however, or for any consequences arising therefrom.</span>
+    </div>
+</div>
 
 <!-- ================================================================
      LANGUAGE PICKER (shown first on every visit)
@@ -1975,6 +2009,7 @@ var lang = 'en';
 function selectLanguage(code) {
     lang = code;
     document.getElementById('langOverlay').style.display = 'none';
+    document.getElementById('disclaimerBar').classList.add('show');
     document.documentElement.lang = code;
     document.documentElement.dir = (code === 'ur') ? 'rtl' : 'ltr';
     applyTranslations();
